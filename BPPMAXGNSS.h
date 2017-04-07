@@ -35,16 +35,84 @@
 #define INTERFACE_SERIAL 1
 #define INTERFACE_SOFT_SERIAL 2
 
+#define UBX_HEADER_1 0xB5
+#define UBX_HEADER_2 0x62
+
+#define NUM_CONTROL_BYTES 8	// The number of control (header plus checksum) in a message
+
+#define CLASS_NAV 0x01
+#define CLASS_ACK 0x05
+#define CLASS_CFG 0x06
+
+#define ID_CFG_MSG
+
+
+
 namespace BPPGNSS {
+	
+	void appendChecksum(uint8_t* msg, uint8_t msgLength);
+	
+	void packU4(uint8_t* buf, uint32_t ulongToPack);
+	void packL4(uint8_t* buf, uint32_t longToPack);	
+	void packU2(uint8_t* buf, uint16_t ulongToPack);
+	void packL2(uint8_t* buf, uint16_t longToPack);
+	
+	uint32_t unpackU4(uint8_t* buf);
+	int32_t unpackL4(uint8_t* buf);	
+	uint16_t unpackU2(uint8_t* buf);
+	int16_t unpackL2(uint8_t* buf);
+	
 	
 	class UBXMsg {
 		public:
-			uint8_t* msg;
-			uint8_t getLength(void);
-			virtual void createMsg(void);
-		private:
-			uint8_t len;
+			uint8_t getDataLength(void);
+			virtual void encodeMsg(uint8_t* buf);
+			virtual void decodeMsg(uint8_t* buf) = 0; // Pure virtual
+		protected:
+			uint8_t _dataLen;
+			uint8_t _msgClass;
+			uint8_t _msgID;
 	};
+	
+	class CFG_MSG_Poll : protected UBXMsg {
+		public:
+			CFG_MSG_Poll();
+			void encodeMsg(uint8_t* buf);
+			void decodeMsg(uint8_t* buf);
+			
+			// Message-specific fields
+			uint8_t msgClass;
+			uint8_t msgID;
+	};
+	
+	class CFG_MSG_SetRates : protected UBXMsg {
+		public:
+			CFG_MSG_SetRates();
+			void encodeMsg(uint8_t* buf);
+			void decodeMsg(uint8_t* buf);
+			
+			// Message-specific fields
+			uint8_t msgClass;
+			uint8_t msgID;
+			uint8_t rates[6];
+	};
+	
+	class CFG_MSG_SetRate : protected UBXMsg {
+		public:
+			CFG_MSG_SetRate();
+			void encodeMsg(uint8_t* buf);
+			void decodeMsg(uint8_t* buf);
+			
+			// Message-specific fields
+			uint8_t msgClass;
+			uint8_t msgID;
+			uint8_t rate;
+	};
+	
+	class NAV_POSLLH_SOLN : protected UBXMsg {
+		
+		
+	}
 	
 	class MAXGNSS {
 		public:
@@ -71,13 +139,9 @@ namespace BPPGNSS {
 			uint8_t readBytesSerial(uint8_t* buffer, uint8_t length, uint16_t timeout);
 			uint8_t readBytesSoftSerial(uint8_t* buffer, uint8_t length, uint16_t timeout);
 			
-			void appendChecksum(uint8_t* msg, uint8_t msgLength);
+			
 		
 	};
-	
-	
-	
-	
 	
 }
 #endif

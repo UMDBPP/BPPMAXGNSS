@@ -1,5 +1,8 @@
 #include "Arduino.h"
 #include "BPPMAXGNSS.h"
+
+
+
 namespace BPPGNSS {
 MAXGNSS::MAXGNSS(uint8_t interfaceMode) {
 	I2c.begin();
@@ -15,8 +18,8 @@ bool MAXGNSS::getUBX_ACK(uint8_t *msg) { // Adapted from from HABDuino
   unsigned long startTime = millis();
 
   // Construct the expected ACK packet    
-  ackPacket[0] = 0xB5;	// header
-  ackPacket[1] = 0x62;	// header
+  ackPacket[0] = UBX_HEADER_1;	// header
+  ackPacket[1] = UBX_HEADER_1;	// header
   ackPacket[2] = 0x05;	// class
   ackPacket[3] = 0x01;	// id
   ackPacket[4] = 0x02;	// length
@@ -58,7 +61,7 @@ bool MAXGNSS::getUBX_ACK(uint8_t *msg) { // Adapted from from HABDuino
   }
 }
 
-void MAXGNSS::appendChecksum(uint8_t* msg, uint8_t msgLength)
+void appendChecksum(uint8_t* msg, uint8_t msgLength)
 {
 
 	uint8_t CK_A = 0;
@@ -182,6 +185,17 @@ uint8_t MAXGNSS::readBytesSerial(uint8_t* buffer, uint8_t length, uint16_t timeo
 
 uint8_t MAXGNSS::readBytesSoftSerial(uint8_t* buffer, uint8_t length, uint16_t timeout = 3000) {
 	return 0; // TODO
+}
+
+virtual void encodeMsg(uint8_t* buf) {
+		buf[0] = UBX_HEADER_1; // Header
+		buf[1] = UBX_HEADER_2;
+		buf[2] = _msgClass; // Class
+		buf[3] = _msgID; // ID
+		buf[4] = _dataLen; // Length
+		buf[5] = 0x00; // Upper byte of length; always 0 in this implementation
+		appendChecksum(buf, _dataLen + NUM_CONTROL_BYTES);
+	
 }
 }
 
