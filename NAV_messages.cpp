@@ -7,7 +7,7 @@ namespace BPPGNSS {
 		_msgID = ID_NAV_POSLLH;
 		_dataLen = 28;
 		
-		iTow = 0;
+		iTOW = 0;
 		lon = 0;
 		lat = 0;
 		height = 0;
@@ -17,11 +17,11 @@ namespace BPPGNSS {
 	
 	
 	}
-	NAV_POSLLH_Solution::encodeMSG(uint8_t* buf){
+	void NAV_POSLLH_Solution::encodeMsg(uint8_t* buf){
 		uint8_t temp[4];
 		
 		// Encode iTow
-		encodeU4(temp, iTow);
+		encodeU4(temp, iTOW);
 		buf[NUM_HEADER_BYTES + 0] = temp[0];
 		buf[NUM_HEADER_BYTES + 1] = temp[1];
 		buf[NUM_HEADER_BYTES + 2] = temp[2];
@@ -71,7 +71,7 @@ namespace BPPGNSS {
 		
 		
 	}
-	NAV_POSLLH_Solution::decodeMSG(uint8* buf){
+	void NAV_POSLLH_Solution::decodeMsg(uint8_t* buf){
 	
 		uint8_t temp[4];
 		
@@ -80,7 +80,7 @@ namespace BPPGNSS {
 		temp[1] = buf[NUM_HEADER_BYTES + 1];
 		temp[2] = buf[NUM_HEADER_BYTES + 2];
 		temp[3] = buf[NUM_HEADER_BYTES + 3];
-		iTow = decodeU4(temp);
+		iTOW = decodeU4(temp);
 		
 		//Decode lon
 		temp[0] = buf[NUM_HEADER_BYTES + 4];
