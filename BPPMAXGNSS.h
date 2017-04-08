@@ -47,22 +47,22 @@
 
 #define ID_CFG_MSG 0x01
 
-
+#define ID_NAV_POSLLH 0x02
 
 
 namespace BPPGNSS {
 	
 	void appendChecksum(uint8_t* msg, uint8_t msgLength);
 	
-	void packU4(uint8_t* buf, uint32_t ulongToPack);
-	void packL4(uint8_t* buf, uint32_t longToPack);	
-	void packU2(uint8_t* buf, uint16_t ulongToPack);
-	void packL2(uint8_t* buf, uint16_t longToPack);
+	void encodeU4(uint8_t* buf, uint32_t ulongToPack);
+	void encodeI4(uint8_t* buf, uint32_t longToPack);	
+	void encodeU2(uint8_t* buf, uint16_t ulongToPack);
+	void encodeI2(uint8_t* buf, uint16_t longToPack);
 	
-	uint32_t unpackU4(uint8_t* buf);
-	int32_t unpackL4(uint8_t* buf);	
-	uint16_t unpackU2(uint8_t* buf);
-	int16_t unpackL2(uint8_t* buf);
+	uint32_t decodeU4(uint8_t* buf);
+	int32_t decodeI4(uint8_t* buf);	
+	uint16_t decodeU2(uint8_t* buf);
+	int16_t decodeI2(uint8_t* buf);
 	
 	
 	class UBXMsg {
