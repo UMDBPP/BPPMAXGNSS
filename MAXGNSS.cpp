@@ -187,7 +187,7 @@ uint8_t MAXGNSS::readBytesSoftSerial(uint8_t* buffer, uint8_t length, uint16_t t
 	return 0; // TODO
 }
 
-virtual void encodeMsg(uint8_t* buf) {
+void UBXMsg::encodeMsg(uint8_t* buf) {
 		buf[0] = UBX_HEADER_1; // Header
 		buf[1] = UBX_HEADER_2;
 		buf[2] = _msgClass; // Class

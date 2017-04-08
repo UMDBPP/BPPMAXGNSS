@@ -38,13 +38,15 @@
 #define UBX_HEADER_1 0xB5
 #define UBX_HEADER_2 0x62
 
+#define NUM_HEADER_BYTES 6
 #define NUM_CONTROL_BYTES 8	// The number of control (header plus checksum) in a message
 
 #define CLASS_NAV 0x01
 #define CLASS_ACK 0x05
 #define CLASS_CFG 0x06
 
-#define ID_CFG_MSG
+#define ID_CFG_MSG 0x01
+
 
 
 
@@ -109,10 +111,23 @@ namespace BPPGNSS {
 			uint8_t rate;
 	};
 	
-	class NAV_POSLLH_SOLN : protected UBXMsg {
+	class NAV_POSLLH_Solution : protected UBXMsg {
+		public:	
+			NAV_POSLLH_Solution();
+			void encodeMsg(uint8_t* buf);
+			void decodeMsg(uint8_t* buf);
+			
+			// Message-specific fields
+			uint32_t iTOW;
+			int32_t lon;
+			int32_t lat;
+			int32_t height;
+			int32_t hMSL;
+			uint32_t hAcc;
+			uint32_t vAcc;
+			
 		
-		
-	}
+	};
 	
 	class MAXGNSS {
 		public:
