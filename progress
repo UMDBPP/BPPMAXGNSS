@@ -1,0 +1,18 @@
+Finished:
+- NAV_POSLLH_Solution
+- NAV_DOP_Dilution
+- NAV_SOL_Solution
+- NAV_PVT_Solution
+- NAV_STATUS
+- NAV_TIMEUTC
+- NAV_VELNED
+
+- CFG_NAV5_Poll
+- CFG_NAV5_EngineSettings
+- CFG_NMEA_Poll
+- CFG_NMEA_Deprecated
+
+
+Need to ask Luke for help:
+- NAV_SBAS (awkward byte offset)
+- NAV_SVINFO (awkward byte offset)
