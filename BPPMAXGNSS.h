@@ -60,14 +60,12 @@
 namespace BPPGNSS {
 
 	void appendChecksum(uint8_t* msg, uint8_t msgLength);
-
-	void encodeU4(uint8_t* buf, uint32_t ulongToPack);
-	void encodeI4(uint8_t* buf, uint32_t longToPack);
-	void encodeU2(uint8_t* buf, uint16_t ulongToPack);
-	void encodeI2(uint8_t* buf, uint16_t longToPack);
-	void encodeU1(uint8_t* buf, uint16_t ulongtoPack);
-	void encodeI1(uint8_t* buf, uint16_t ulongtoPack);
-
+	
+	void encodeU4(uint8_t* buf, uint32_t ulongToEnc);
+	void encodeI4(uint8_t* buf, uint32_t longToEnc);	
+	void encodeU2(uint8_t* buf, uint16_t uintToEnc);
+	void encodeI2(uint8_t* buf, uint16_t intToEnc);
+	
 	uint32_t decodeU4(uint8_t* buf);
 	int32_t decodeI4(uint8_t* buf);
 	uint16_t decodeU2(uint8_t* buf);

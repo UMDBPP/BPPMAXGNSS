@@ -197,5 +197,36 @@ void UBXMsg::encodeMsg(uint8_t* buf) {
 		appendChecksum(buf, _dataLen + NUM_CONTROL_BYTES);
 	
 }
+
+// Encodes an unsigned long (32 bits) into a UBX byte sequence from a uint32_t; order is litle-endian
+void encodeU4(uint8_t* buf, uint32_t ulongToEnc) {
+	buf[0] = (uint8_t) (ulongToEnc); // Least significant
+	buf[1] = (uint8_t) (ulongToEnc >> 8);
+	buf[2] = (uint8_t) (ulongToEnc >> 16);
+	buf[3] = (uint8_t) (ulongToEnc >> 24); // Most significant
+	
+}
+	
+// Encodes a signed long (32 bits) into a UBX byte sequence from an int32_t; order is litle-endian	
+void encodeI4(uint8_t* buf, uint32_t longToEnc) {
+	buf[0] = (uint8_t) (longToEnc); // Least significant
+	buf[1] = (uint8_t) (longToEnc >> 8);
+	buf[2] = (uint8_t) (longToEnc >> 16);
+	buf[3] = (uint8_t) (longToEnc >> 24); // Most significant
+}
+
+// Encodes an unsigned int (16 bits) into a UBX byte sequence from a uint16_t; order is litle-endian
+void encodeU2(uint8_t* buf, uint16_t uintToEnc) {
+	buf[0] = (uint8_t) (uintToEnc); // Least significant
+	buf[1] = (uint8_t) (uintToEnc >> 8); // Most significant
+}
+
+// Encodes a signed int (16 bits) into a UBX byte sequence from an int16_t; order is litle-endian
+void encodeI2(uint8_t* buf, uint16_t intToEnc) {
+	buf[0] = (uint8_t) (intToEnc); // Least significant
+	buf[1] = (uint8_t) (intToEnc >> 8); // Most significant
+}
+
+
 }
 
