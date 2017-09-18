@@ -102,6 +102,7 @@ namespace BPPGNSS {
 			uint8_t _msgID;
 	};
 
+<<<<<<< HEAD
 	/*class CFG_CFG : protected UBXMsg{
 		public:
 				CFG_CFG();
@@ -140,6 +141,8 @@ namespace BPPGNSS {
 
 	};*/
 
+=======
+>>>>>>> origin/master
 	class CFG_MSG_Poll : protected UBXMsg {
 		public:
 			CFG_MSG_Poll();
