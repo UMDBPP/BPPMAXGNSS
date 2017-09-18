@@ -48,6 +48,9 @@
 #define ID_CFG_MSG 0x01
 #define ID_CFG_NAV5 0x24
 #define ID_CFG_NMEA 0x17
+#define ID_CFG_PRT 0x00
+#define ID_CFG_RXM 0x11
+#define ID_CFG_RATE 0x08
 
 #define ID_NAV_POSLLH 0x02
 #define ID_NAV_DOP 0x04
@@ -57,16 +60,28 @@
 #define ID_NAV_TIMEUTC 0x21
 #define ID_NAV_VELNED 0x12
 
+#define ID_ACK_ACK 0x01
+#define ID_ACK_NACK 0x00
+
 namespace BPPGNSS {
 
 	void appendChecksum(uint8_t* msg, uint8_t msgLength);
+
 
 	void encodeU4(uint8_t* buf, uint32_t ulongToPack);
 	void encodeI4(uint8_t* buf, uint32_t longToPack);
 	void encodeU2(uint8_t* buf, uint16_t ulongToPack);
 	void encodeI2(uint8_t* buf, uint16_t longToPack);
 	void encodeU1(uint8_t* buf, uint16_t ulongtoPack);
-	void encodeI1(uint8_t* buf, uint16_t ulongtoPack);
+	void encodeI1(uint8_t* buf, uint16_t longtoPack);
+
+
+	void encodeU4(uint8_t* buf, uint32_t ulongToEnc);
+	void encodeI4(uint8_t* buf, uint32_t longToEnc);
+	void encodeU2(uint8_t* buf, uint16_t uintToEnc);
+	void encodeI2(uint8_t* buf, uint16_t intToEnc);
+	void encodeU1(uint8_t* buf, uint16_t uintToEnc);
+	void encodeI1(uint8_t* buf, uint16_t intToEnc);
 
 	uint32_t decodeU4(uint8_t* buf);
 	int32_t decodeI4(uint8_t* buf);
@@ -86,7 +101,45 @@ namespace BPPGNSS {
 			uint8_t _msgClass;
 			uint8_t _msgID;
 	};
-//////////////////////////////////////////////////
+
+	/*class CFG_CFG : protected UBXMsg{
+		public:
+				CFG_CFG();
+				void encodeMsg(uint8_t* buf);
+				void decodeMsg(uint8_t* buf);
+
+				// Message-specific fields
+
+
+				uint32_t clearMask; //Bitfield
+				//bools for clearMask
+
+				bool antConf;
+				bool rinvConf;
+				bool rxmConf;
+				bool navConf;
+				bool infMsg;
+				bool msgConf;
+				bool ioPort;
+
+				uint32_t saveMask; //Bitfield
+				//bools for saveMask
+
+				bool devSpiFlash;
+
+
+
+				uint32_t loadMask; //Bitfield
+				//bools for loadMask
+
+
+
+				uint32_t deviceMask; //Bitfield
+				//bools for deviceMask
+
+
+	};*/
+
 	class CFG_MSG_Poll : protected UBXMsg {
 		public:
 			CFG_MSG_Poll();
@@ -212,6 +265,167 @@ namespace BPPGNSS {
 			bool compat;
 
 
+
+	};
+
+	class CFG_NMEA : protected UBXMsg{
+		public:
+			CFG_NMEA();
+			void encodeMsg(uint8_t* buf);
+			void decodeMsg(uint8_t* buf);
+
+			//Message-specific fields
+
+			uint8_t filter; //Bitfield
+			//bools for filter
+			bool trackFilt;
+			bool gpsOnlyFilter;
+			bool dateFilt;
+			bool timeFilt;
+			bool mskPosFilt;
+			bool posFilt;
+
+			uint8_t nmeaVersion;
+			uint8_t numSV;
+
+			uint8_t flags; //Bitfield
+			//bools for flags
+			bool consider;
+			bool compat;
+
+			uint32_t gnssToFilter; //Bitfield
+			//bools for gnssToFilter
+			bool glonass;
+			bool qzss;
+			bool sbas;
+			bool gps;
+
+			uint8_t svNumbering;
+			uint8_t mainTalkerId;
+			uint8_t gsvTalkerId;
+			uint8_t reserved;
+
+	};
+
+	class CFG_PRT_Poll_Used : protected UBXMsg{
+		public:
+			CFG_PRT_Poll_Used();
+			void encodeMsg(uint8_t* buf);
+			void decodeMsg(uint8_t* buf);
+
+			//Message-specific fields
+
+			//No Payload
+
+	};
+
+	class CFG_PRT_Poll_IOPort : protected UBXMsg{
+		public:
+			CFG_PRT_Poll_IOPort();
+			void encodeMsg(uint8_t* buf);
+			void decodeMsg(uint8_t* buf);
+
+			//Message-specific fields
+
+			uint8_t PortID;
+
+	};
+
+	class CFG_PRT_UART : protected UBXMsg{
+		public:
+			CFG_PRT_UART();
+			void encodeMsg(uint8_t* buf);
+			void decodeMsg(uint8_t* buf);
+
+			//Message-specific fields
+
+			uint8_t PortID;
+			uint8_t reserved0;
+
+			uint16_t txReady; //Bitfield
+			//bools for txReady
+			bool thres[9];
+			bool pin[5];
+			bool pol;
+			bool en;
+
+			uint32_t mode; // Bitfield
+			//bools for mode
+			bool nStopBits[2];
+			bool parity[3];
+			bool charLen[2];
+			bool reserved1;
+
+			uint32_t baudRate;
+
+			uint16_t inProtoMask; // Bitfield
+			//bools for inProtoMask
+			bool inRtcm;
+			bool inNmea;
+			bool inUbx;
+
+			uint16_t outProtoMask; // Bitfield
+			//bools for outProtoMask
+			bool outNmea;
+			bool outUbx;
+
+			uint16_t flags; // Bitfield
+			//bools for flags
+			bool extendedTxTimeout;
+
+			uint16_t reserved5;
+
+	};
+
+	class CFG_RXM_Poll : protected UBXMsg {
+		public:
+			CFG_RXM_Poll();
+			void encodeMsg(uint8_t* buf);
+			void decodeMsg(uint8_t* buf);
+
+			//Message-specific fields
+
+			//No Payload
+
+
+	};
+
+	class CFG_RXM_Configuration : protected UBXMsg{
+		public:
+			CFG_RXM_Configuration();
+			void encodeMsg(uint8_t* buf);
+			void decodeMsg(uint8_t* buf);
+
+			//Message-specific fields
+
+			uint8_t reserved1; //Note: Always set to 8
+			uint8_t lpmode;
+
+	};
+
+	class CFG_RATE_Poll : protected UBXMsg{
+		public:
+			CFG_RATE_Poll();
+			void encodeMsg(uint8_t* buf);
+			void decodeMsg(uint8_t* buf);
+
+			//Message-specific fields
+
+			//No payload
+
+	};
+
+	class CFG_RATE_Settings : protected UBXMsg{
+		public:
+			CFG_RATE_Settings();
+			void encodeMsg(uint8_t* buf);
+			void decodeMsg(uint8_t* buf);
+
+			//Message-specific fields
+
+			uint16_t measRate;
+			uint16_t navRate;
+			uint16_t timeRef;
 
 	};
 
@@ -435,6 +649,31 @@ namespace BPPGNSS {
 			int32_t heading;
 			uint32_t sAcc;
 			uint32_t cAcc;
+	};
+	//////////////////////////////////////////////////
+
+	class ACK_ACK : protected UBXMsg{
+		ACK_ACK();
+		void encodeMsg(uint8_t* buf);
+		void decodeMsg(uint8_t* buf);
+
+		//Message-specific fields
+
+		uint8_t clsID;
+		uint8_t msgID;
+
+	};
+
+	class ACK_NACK : protected UBXMsg{
+		ACK_NACK();
+		void encodeMsg(uint8_t* buf);
+		void decodeMsg(uint8_t* buf);
+
+		//Message-specific fields
+
+		uint8_t clsID;
+		uint8_t msgID;
+
 	};
 
 

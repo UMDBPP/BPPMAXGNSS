@@ -17,7 +17,7 @@ bool MAXGNSS::getUBX_ACK(uint8_t *msg) { // Adapted from from HABDuino
   uint8_t ackPacket[ACK_PACKET_LENGTH];
   unsigned long startTime = millis();
 
-  // Construct the expected ACK packet    
+  // Construct the expected ACK packet
   ackPacket[0] = UBX_HEADER_1;	// header
   ackPacket[1] = UBX_HEADER_1;	// header
   ackPacket[2] = 0x05;	// class
@@ -41,7 +41,7 @@ bool MAXGNSS::getUBX_ACK(uint8_t *msg) { // Adapted from from HABDuino
     }
 
     // Timeout if no valid response in 3 seconds
-    if (millis() - startTime > TIMEOUT) { 
+    if (millis() - startTime > TIMEOUT) {
       return false;
     }
 
@@ -50,9 +50,9 @@ bool MAXGNSS::getUBX_ACK(uint8_t *msg) { // Adapted from from HABDuino
       b = Serial.read();
 
       // Check that bytes arrive in sequence as per expected ACK packet
-      if (b == ackPacket[ackByteID]) { 
+      if (b == ackPacket[ackByteID]) {
         ackByteID++;
-      } 
+      }
       else {
         ackByteID = 0;	// Reset and look again, invalid order
       }
@@ -71,8 +71,8 @@ void appendChecksum(uint8_t* msg, uint8_t msgLength)
 		CK_A = CK_A + msg[i];
 		CK_B = CK_B + CK_A;
 	}
-	
-	
+
+
 	msg[msgLength - 2] = CK_A;
 	msg[msgLength - 1] = CK_B;
 }
@@ -91,7 +91,7 @@ uint8_t MAXGNSS::bytesAvailable() {
 		default: {
 			return 0; // TODO
 		}
-		
+
 	}
 }
 
@@ -123,7 +123,7 @@ uint8_t MAXGNSS::sendBytes(uint8_t* msg, uint8_t length) {
 		default: {
 			return 0; // TODO
 		}
-		
+
 	}
 }
 
@@ -152,7 +152,7 @@ uint8_t MAXGNSS::readBytes(uint8_t* buffer, uint8_t length, uint16_t timeout = 3
 		default: {
 			return 0; // TODO
 		}
-		
+
 	}
 }
 
@@ -165,16 +165,16 @@ uint8_t MAXGNSS::readBytesI2C(uint8_t* buffer, uint8_t length, uint16_t timeout 
 		if((millis() - startTime) > timeout) { // Enforce the timeout
 			break;
 		}
-		
+
 		while(I2c.available()) { // Read the bytes in the buffer
 			uint8_t b = I2c.receive();
 			buffer[bytesRead] = b;
 			bytesRead++;
 		}
-		
+
 		if(I2c.available() == 0) { // If the buffer is empty, try to refill it
-			I2c.read(GNSS_ADDRESS, GNSS_REGISTER, DEFAULT_BYTES_TO_READ); 
-		}		
+			I2c.read(GNSS_ADDRESS, GNSS_REGISTER, DEFAULT_BYTES_TO_READ);
+		}
 	}
 	return bytesRead;
 }
@@ -195,7 +195,48 @@ void UBXMsg::encodeMsg(uint8_t* buf) {
 		buf[4] = _dataLen; // Length
 		buf[5] = 0x00; // Upper byte of length; always 0 in this implementation
 		appendChecksum(buf, _dataLen + NUM_CONTROL_BYTES);
-	
-}
+
 }
 
+// Encodes an unsigned long (32 bits) into a UBX byte sequence from a uint32_t; order is litle-endian
+void encodeU4(uint8_t* buf, uint32_t ulongToEnc) {
+	buf[0] = (uint8_t) (ulongToEnc); // Least significant
+	buf[1] = (uint8_t) (ulongToEnc >> 8);
+	buf[2] = (uint8_t) (ulongToEnc >> 16);
+	buf[3] = (uint8_t) (ulongToEnc >> 24); // Most significant
+
+}
+
+// Encodes a signed long (32 bits) into a UBX byte sequence from an int32_t; order is litle-endian
+void encodeI4(uint8_t* buf, int32_t longToEnc) {
+	buf[0] = (uint8_t) (longToEnc); // Least significant
+	buf[1] = (uint8_t) (longToEnc >> 8);
+	buf[2] = (uint8_t) (longToEnc >> 16);
+	buf[3] = (uint8_t) (longToEnc >> 24); // Most significant
+}
+
+// Encodes an unsigned int (16 bits) into a UBX byte sequence from a uint16_t; order is litle-endian
+void encodeU2(uint8_t* buf, uint16_t uintToEnc) {
+	buf[0] = (uint8_t) (uintToEnc); // Least significant
+	buf[1] = (uint8_t) (uintToEnc >> 8); // Most significant
+}
+
+// Encodes a signed int (16 bits) into a UBX byte sequence from an int16_t; order is litle-endian
+void encodeI2(uint8_t* buf, int16_t intToEnc) {
+	buf[0] = (uint8_t) (intToEnc); // Least significant
+	buf[1] = (uint8_t) (intToEnc >> 8); // Most significant
+}
+
+// Encodes an unsigned variable (8 bits) into a UBX byte sequence from an int8_t; order is litle-endian
+void encodeU1(uint8_t* buf, uint8_t uintToEnc){
+	buf[0] = (uint8_t) (uintToEnc); // Least significant
+
+}
+
+// Encodes an unsigned variable (8 bits) into a UBX byte sequence from an int8_t; order is litle-endian
+void encodeI1(uint8_t* buf, int8_t intToEnc){
+	buf[0] = (uint8_t) (intToEnc); // Least significant
+
+}
+
+}

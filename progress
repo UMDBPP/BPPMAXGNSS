@@ -11,8 +11,24 @@ Finished:
 - CFG_NAV5_EngineSettings
 - CFG_NMEA_Poll
 - CFG_NMEA_Deprecated
+- CFG_NMEA
+- CFG_PRT_UART
+- CFG_RXM_Poll
+- CFG_RXM_Configuration
+- CFG_RATE
+
+-ACK_ACK
+-ACK_NACK
+
+Messages without payloads:
 
 
-Need to ask Luke for help:
+Left to do:
+- CFG_CFG (Ask Luke for help)
+- CFG_PRT_I2C
+
+
+Set aside for now:
 - NAV_SBAS (awkward byte offset)
 - NAV_SVINFO (awkward byte offset)
+- CFG_GNSS (awkward byte offset)
