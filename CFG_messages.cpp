@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "BPPMAXGNSS.h"
 
-namespace BPPGNSS {
+namespace BPPMAXGNSS {
 	uint8_t UBXMsg::getDataLength(void) {
 		return _dataLen;
 	}

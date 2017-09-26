@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "BPPMAXGNSS.h"
 
-namespace BPPGNSS {
+namespace BPPMAXGNSS {
 
   ACK_ACK::ACK_ACK(void){
     _msgClass = CLASS_ACK;

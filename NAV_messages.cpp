@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "BPPMAXGNSS.h"
 
-namespace BPPGNSS {
+namespace BPPMAXGNSS {
 	NAV_POSLLH_Solution::NAV_POSLLH_Solution(void){
 		_msgClass = CLASS_NAV;
 		_msgID = ID_NAV_POSLLH;

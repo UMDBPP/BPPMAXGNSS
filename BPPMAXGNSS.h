@@ -1,5 +1,5 @@
 /*
- * University of Maryland Balloon Payload Prgogram u-blox GPS Library
+ * University of Maryland Balloon Payload Program u-blox GPS Arduino Library
  * For use with u-blox MAX series GNSS modules
  *
  * Copyright (c) 2017 University of Maryland Space Systems Laboratory.
@@ -20,8 +20,8 @@
  * See <http://www.gnu.org/licenses/>.
  */
 
-#ifndef BPPGNSS_h
-#define BPPGNSS_h
+#ifndef BPPMAXGNSS_h
+#define BPPMAXGNSS_h
 
 #include <Arduino.h>
 #include <I2C.h>
@@ -63,7 +63,7 @@
 #define ID_ACK_ACK 0x01
 #define ID_ACK_NACK 0x00
 
-namespace BPPGNSS {
+namespace BPPMAXGNSS {
 
 	void appendChecksum(uint8_t* msg, uint8_t msgLength);
 
@@ -102,7 +102,6 @@ namespace BPPGNSS {
 			uint8_t _msgID;
 	};
 
-<<<<<<< HEAD
 	/*class CFG_CFG : protected UBXMsg{
 		public:
 				CFG_CFG();
@@ -141,8 +140,6 @@ namespace BPPGNSS {
 
 	};*/
 
-=======
->>>>>>> origin/master
 	class CFG_MSG_Poll : protected UBXMsg {
 		public:
 			CFG_MSG_Poll();
@@ -681,9 +678,9 @@ namespace BPPGNSS {
 
 
 
-	class MAXGNSS {
+	class BPPMAXGNSS {
 		public:
-			MAXGNSS(uint8_t interfaceMode);
+			BPPMAXGNSS(uint8_t interfaceMode);
 
 			uint8_t readBytes(uint8_t* buffer, uint8_t length, uint16_t timeout);
 			uint8_t bytesAvailable();

@@ -3,13 +3,13 @@
 
 
 
-namespace BPPGNSS {
-MAXGNSS::MAXGNSS(uint8_t interfaceMode) {
+namespace BPPMAXGNSS {
+BPPMAXGNSS::BPPMAXGNSS(uint8_t interfaceMode) {
 	I2c.begin();
 	_interfaceMode = interfaceMode;
 }
 
-bool MAXGNSS::getUBX_ACK(uint8_t *msg) { // Adapted from from HABDuino
+bool BPPMAXGNSS::getUBX_ACK(uint8_t *msg) { // Adapted from from HABDuino
   uint8_t b;
   uint8_t ackByteID = 0;
   const uint8_t ACK_PACKET_LENGTH = 10;
@@ -77,7 +77,7 @@ void appendChecksum(uint8_t* msg, uint8_t msgLength)
 	msg[msgLength - 1] = CK_B;
 }
 
-uint8_t MAXGNSS::bytesAvailable() {
+uint8_t BPPMAXGNSS::bytesAvailable() {
 	switch (_interfaceMode) {
 		case INTERFACE_I2C: {
 			return bytesAvailableI2C();
@@ -95,21 +95,21 @@ uint8_t MAXGNSS::bytesAvailable() {
 	}
 }
 
-uint8_t MAXGNSS::bytesAvailableI2C() {
+uint8_t BPPMAXGNSS::bytesAvailableI2C() {
 	return I2c.available();
 }
 
-uint8_t MAXGNSS::bytesAvailableSerial() {
+uint8_t BPPMAXGNSS::bytesAvailableSerial() {
 	return 0; // TODO
 }
 
-uint8_t MAXGNSS::bytesAvailableSoftSerial() {
+uint8_t BPPMAXGNSS::bytesAvailableSoftSerial() {
 	return 0; // TODO
 }
 
 
 // Returns number of bytes sent
-uint8_t MAXGNSS::sendBytes(uint8_t* msg, uint8_t length) {
+uint8_t BPPMAXGNSS::sendBytes(uint8_t* msg, uint8_t length) {
 	switch (_interfaceMode) {
 		case INTERFACE_I2C: {
 			return sendBytesI2C(msg, length);
@@ -127,7 +127,7 @@ uint8_t MAXGNSS::sendBytes(uint8_t* msg, uint8_t length) {
 	}
 }
 
-uint8_t MAXGNSS::sendBytesI2C(uint8_t* msg, uint8_t length) {
+uint8_t BPPMAXGNSS::sendBytesI2C(uint8_t* msg, uint8_t length) {
 	I2c.begin();
 	I2c.write(GNSS_ADDRESS, GNSS_REGISTER, 0XFF); // wakes GNSS
 	delay(100);
@@ -138,7 +138,7 @@ uint8_t MAXGNSS::sendBytesI2C(uint8_t* msg, uint8_t length) {
 
 
 // Returns number of bytes read
-uint8_t MAXGNSS::readBytes(uint8_t* buffer, uint8_t length, uint16_t timeout = 3000) {
+uint8_t BPPMAXGNSS::readBytes(uint8_t* buffer, uint8_t length, uint16_t timeout = 3000) {
 	switch (_interfaceMode) {
 		case INTERFACE_I2C: {
 			return readBytesI2C(buffer, length, timeout);
@@ -157,7 +157,7 @@ uint8_t MAXGNSS::readBytes(uint8_t* buffer, uint8_t length, uint16_t timeout = 3
 }
 
 // Returns the number of bytes read
-uint8_t MAXGNSS::readBytesI2C(uint8_t* buffer, uint8_t length, uint16_t timeout = 3000) {
+uint8_t BPPMAXGNSS::readBytesI2C(uint8_t* buffer, uint8_t length, uint16_t timeout = 3000) {
 	unsigned long startTime = millis();
 	uint8_t bytesRead = 0;
 	while(bytesRead < length)
@@ -179,11 +179,11 @@ uint8_t MAXGNSS::readBytesI2C(uint8_t* buffer, uint8_t length, uint16_t timeout 
 	return bytesRead;
 }
 
-uint8_t MAXGNSS::readBytesSerial(uint8_t* buffer, uint8_t length, uint16_t timeout = 3000) {
+uint8_t BPPMAXGNSS::readBytesSerial(uint8_t* buffer, uint8_t length, uint16_t timeout = 3000) {
 	return 0; // TODO
 }
 
-uint8_t MAXGNSS::readBytesSoftSerial(uint8_t* buffer, uint8_t length, uint16_t timeout = 3000) {
+uint8_t BPPMAXGNSS::readBytesSoftSerial(uint8_t* buffer, uint8_t length, uint16_t timeout = 3000) {
 	return 0; // TODO
 }
 
