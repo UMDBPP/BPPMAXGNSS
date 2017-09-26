@@ -2,12 +2,14 @@
 #include "Arduino.h"
 #include "BPPMAXGNSS.h"
 
+BPPMAXGNSS gnss_module = BPPMAXGNSS();
+
 void setup()
 {
-// Add your initialization code here
+
 }
 
 void loop()
 {
-//Add your repeated code here
+
 }
